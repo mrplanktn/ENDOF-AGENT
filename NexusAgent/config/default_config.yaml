@@ -1,0 +1,91 @@
+# ==============================================================================
+# NexusAgent Default Configuration
+# ==============================================================================
+# Copy this file and modify as needed. Environment variables override values.
+# See docs/configuration.md for full reference.
+
+# --- General ---
+data_dir: "~/.nexusagent"          # Root data directory
+log_level: "INFO"                  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+
+# --- Model Configuration ---
+model:
+  default_provider: "openai"       # Default LLM provider
+  providers:
+    openai:
+      provider: "openai"
+      model: "gpt-4o"
+      # api_key: ""                # Prefer OPENAI_API_KEY env var
+      base_url: ""                 # Override for compatible APIs
+      max_tokens: 4096
+      temperature: 0.7
+      timeout: 120
+    anthropic:
+      provider: "anthropic"
+      model: "claude-3-5-sonnet-20241022"
+      # api_key: ""                # Prefer ANTHROPIC_API_KEY env var
+      max_tokens: 4096
+      temperature: 0.7
+      timeout: 120
+    ollama:
+      provider: "ollama"
+      model: "llama3"
+      base_url: "http://localhost:11434"
+      max_tokens: 4096
+      temperature: 0.7
+
+# --- Terminal / CLI ---
+terminal:
+  theme: "dark"                    # dark, light
+  code_theme: "monokai"            # Pygments theme for code blocks
+  max_output_lines: 500
+  show_timestamps: true
+  syntax_highlighting: true
+  pager: "auto"                    # auto, always, never
+
+# --- Memory ---
+memory:
+  enabled: true
+  db_path: "~/.nexusagent/memory.db"
+  max_entries: 10000
+  categories:
+    - conversation
+    - fact
+    - task
+    - preference
+    - context
+  auto_save: true                  # Auto-save conversation facts
+
+# --- Gateway (Multi-Platform) ---
+gateway:
+  enabled: false                   # Set true to enable platform adapters
+  allowlist: []                    # User IDs allowed (empty = all)
+  require_auth: false
+  max_message_length: 4096
+  session_timeout_minutes: 60
+  telegram_token: ""               # Prefer TELEGRAM_TOKEN env var
+  discord_token: ""                # Prefer DISCORD_TOKEN env var
+
+# --- Tools ---
+tools:
+  web_search_enabled: true
+  web_fetch_enabled: true
+  code_execute_enabled: true
+  file_read_enabled: true
+  file_write_enabled: true
+  code_sandbox: "docker"           # docker, local, none
+  max_file_size_mb: 10
+  allowed_domains: []              # Empty = all domains allowed
+  blocked_domains:
+    - "localhost"
+    - "127.0.0.1"
+    - "0.0.0.0"
+
+# --- Security ---
+security:
+  api_key_encryption: true
+  require_approval_for_tools: false  # Prompt before tool execution
+  audit_log: true
+  audit_log_path: "~/.nexusagent/audit.log"
+  max_rate_limit: 60               # Requests per minute
+  ip_allowlist: []                 # Empty = all IPs allowed
